@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:ora="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet author="tjmason" id="1">
+		<sqlFile path="./0.4.1/u_flood.get_telemetry.sql" splitStatements="false"/>
+		<rollback>
+			<!--First instance of this function so just drop -->
+			DROP FUNCTION u_flood.get_telemetry(integer, character);
+		</rollback>
+	</changeSet>
+	<changeSet author="tjmason" id="2">
+		<sqlFile path="./0.4.1/u_flood.load_telemetry_context_data.sql" splitStatements="false"/>
+		<rollback>
+			<!-- already exists so just run in function to update to current version -->
+			<sqlFile path="./0.4.0/functions/load_telemetry_context_data.sql" splitStatements="false"/>
+		</rollback>
+	</changeSet>
+	<changeSet author="tjmason" id="3">
+		<sqlFile path="./0.4.1/u_flood.station_split_mview.sql" splitStatements="false"/>
+		<rollback>
+			<!-- First instance so drop it -->
+			DROP MATERIALIZED VIEW u_flood.station_split_mview;
+		</rollback>
+	</changeSet>
+
+</databaseChangeLog>

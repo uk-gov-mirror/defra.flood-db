@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:ora="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<!--Assets order
+	ffoi
+	Impacts
+	Fwis
+	rivers
+	-->
+
+	<!--ffoi-->
+	<changeSet author="tjmason" id="beta-ffoi-1">
+		<sqlFile path="./private-beta/u_flood.ffoi_max.sql" splitStatements="false"/>
+	</changeSet>
+
+	<changeSet author="tjmason" id="beta-ffoi-2">
+		<sqlFile path="./private-beta/ffoi_get_thresholds.sql" splitStatements="false"/>
+	</changeSet>
+
+	<changeSet author="tjmason" id="beta-ffoi-3">
+		<sqlFile path="./private-beta/stations_overview_mview.sql" splitStatements="false"/>
+	</changeSet>
+
+	<!--impacts-->
+	<changeSet author="tjmason" id="beta-impacts-1">
+		<sqlFile path="./private-beta/impact.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="beta-impacts-2">
+		<sqlFile path="./private-beta/impact_mview.sql" splitStatements="false"/>
+	</changeSet>
+	
+	
+	<!--FWIS-->
+	<changeSet author="tjmason" id="beta-fwis-1">
+		<sqlFile path="./private-beta/fwis.sql" splitStatements="false"/>
+	</changeSet>
+
+	<changeSet author="tjmason" id="beta-fwis-2">
+		<sqlFile path="./private-beta/fwa_mview.sql" splitStatements="false"/>
+	</changeSet>
+
+	<changeSet author="tjmason" id="beta-fwis-3">
+		<sqlFile path="./private-beta/drop_legacy.sql" splitStatements="false"/>
+	</changeSet>
+
+	<!--Rivers-->
+	<changeSet author="tjmason" id="beta-rivers-1">
+		<sqlFile path="./private-beta/river_stations.sql" splitStatements="false"/>
+	</changeSet>
+
+	<changeSet author="tjmason" id="beta-rivers-2">
+		<sqlFile path="./private-beta/rivers_mview.sql" splitStatements="false"/>
+	</changeSet>
+
+
+</databaseChangeLog>

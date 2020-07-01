@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:ora="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+<!-- FFOI_FILE table creation -->
+    <changeSet author="tjmason" id="ffoi-1">
+        <createSequence sequenceName="ffoi_file_ffoi_file_id_seq"/>
+    </changeSet>
+ 
+    <changeSet author="tjmason" id="ffoi-2">
+        <createTable tableName="ffoi_file">
+            <column name="ffoi_file_id" type="BIGINT" defaultValue="nextval('ffoi_file_ffoi_file_id_seq'::regclass)">
+             </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imported" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="processed" type="BOOL"/>
+            <column defaultValueBoolean="false" name="erred" type="BOOL"/> 
+        </createTable>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-3">
+         <addPrimaryKey constraintName="pk_ffoi_file_id" tableName="ffoi_file" columnNames="ffoi_file_id" tablespace="flood_indexes"/>
+   </changeSet>
+
+<!-- FFOI_FORECAST table creation -->
+
+    <changeSet author="tjmason" id="ffoi-4">
+        <createSequence sequenceName="ffoi_forecast_ffoi_forecast_id_seq"/>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-5">
+        <createTable tableName="ffoi_forecast">
+            <column name="ffoi_forecast_id" type="BIGINT" defaultValue="nextval('ffoi_forecast_ffoi_forecast_id_seq'::regclass)"/>
+	    <column name="ffoi_file_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="forecast_date" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+	    <column name="station_reference" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="station_name" type="TEXT"/>
+	    <column name="rloi_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+	    <column name="parameter" type="TEXT"/>
+            <column name="qualifier" type="TEXT"/>
+            <column name="units" type="TEXT"/>   
+            <column name="start_timestamp" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="end_timestamp" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="values" type="XML"/>
+        </createTable>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-6">
+         <addPrimaryKey constraintName="pk_ffoi_forecast_id" tableName="ffoi_forecast" columnNames="ffoi_forecast_id" tablespace="flood_indexes"/>
+   </changeSet>
+
+    <changeSet author="tjmason" id="ffoi-7">
+        <addForeignKeyConstraint baseColumnNames="ffoi_file_id" baseTableName="ffoi_forecast" constraintName="fk_ffoi_file_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="ffoi_file_id" referencedTableName="ffoi_file"/>
+    </changeSet>
+
+   <!-- indeces -->
+
+   <changeSet author="tjmason" id="ffoi-8">
+        <createIndex indexName="idx_ffoi_forecast_rloi_id" tableName="ffoi_forecast" tablespace="flood_indexes">
+            <column name="rloi_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason" id="ffoi-9">
+        <createIndex indexName="idx_ffoi_forecast_ffoi_file_id" tableName="ffoi_forecast" tablespace="flood_indexes">
+            <column name="ffoi_file_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason" id="ffoi-10">
+        <createIndex indexName="idx_ffoi_file_filename" tableName="ffoi_file" tablespace="flood_indexes">
+            <column name="filename"/>
+        </createIndex>
+    </changeSet>
+
+    <!--Table ffoi_station-->
+    <changeSet author="tjmason" id="ffoi-11">
+        <createSequence sequenceName="ffoi_station_ffoi_station_id_seq"/>
+    </changeSet>
+ 
+    <changeSet author="tjmason" id="ffoi-12">
+        <createTable tableName="ffoi_station">
+            <column name="ffoi_station_id" type="BIGINT" defaultValue="nextval('ffoi_station_ffoi_station_id_seq'::regclass)">
+             </column>
+            <column name="rloi_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-13">
+         <addPrimaryKey constraintName="pk_ffoi_station_id" tableName="ffoi_station" columnNames="ffoi_station_id" tablespace="flood_indexes"/>
+   </changeSet>
+<!--
+    <changeSet author="tjmason" id="ffoi-14">
+        <addForeignKeyConstraint baseColumnNames="rloi_id" baseTableName="ffoi_station" constraintName="fk_ffoi_station_rloi_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="rloi_id" referencedTableName="telemetry_context"/>
+    </changeSet>
+-->	
+
+    <!--Table ffoi_station_threshold -->
+
+   <changeSet author="tjmason" id="ffoi-15">
+        <createSequence sequenceName="ffoi_station_threshold_ffoi_station_threshold_id_seq"/>
+    </changeSet>
+ 
+    <changeSet author="tjmason" id="ffoi-16">
+        <createTable tableName="ffoi_station_threshold">
+            <column name="ffoi_station_threshold_id" type="BIGINT" defaultValue="nextval('ffoi_station_threshold_ffoi_station_threshold_id_seq'::regclass)">
+             </column>
+            <column name="ffoi_station_id" type="BIGINT">
+		<constraints nullable="false"/>
+             </column>
+            <column name="fwis_code" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-17">
+         <addPrimaryKey constraintName="pk_ffoi_station_threshold_id" tableName="ffoi_station_threshold" columnNames="ffoi_station_threshold_id" tablespace="flood_indexes"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-18">
+        <addForeignKeyConstraint baseColumnNames="ffoi_station_id" baseTableName="ffoi_station_threshold" constraintName="fk_ffoi_station_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="ffoi_station_id" referencedTableName="ffoi_station"/>
+    </changeSet>
+
+
+    <!-- functions -->
+    <changeSet author="tjmason" id="ffoi-function-1">
+	<sqlFile path="./ffoi/u_flood.ffoi_import.sql" splitStatements="false"/>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-function-2">
+	<sqlFile path="./ffoi/u_flood.ffoi_process.sql" splitStatements="false"/>
+    </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-function-3">
+	<sqlFile path="./ffoi/u_flood.ffoi_process_file.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-function-4">
+	<sqlFile path="./ffoi/u_flood.ffoi_cleanup_by_seconds.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-function-5">
+	<sqlFile path="./ffoi/u_flood.get_telemetry.sql" splitStatements="false"/>
+   </changeSet>
+
+   <!-- data -->
+   <changeSet author="tjmason" id="ffoi-data-1">
+	<sqlFile path="./ffoi/ffoi_station_data_load.sql" splitStatements="false"/>
+   </changeSet>
+
+<!-- misc -->
+   <changeSet author="tjmason" id="ffoi-function-6">
+	<sqlFile path="./ffoi/u_flood.ffoi_get_thresholds.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-function-7">
+	<sqlFile path="./ffoi/u_flood.load_telemetry_value.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-mview-1">
+	<sqlFile path="./ffoi/u_flood.stations_overview_mview.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-data-2">
+	<sqlFile path="./ffoi/ffoi_station_5230.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-function-8">
+	<sqlFile path="./ffoi/u_flood.ffoi_processv2.sql" splitStatements="false"/>
+   </changeSet>
+
+   <changeSet author="tjmason" id="ffoi-data-3">
+	<sqlFile path="./ffoi/ffoi_station_5230_remove.sql" splitStatements="false"/>
+   </changeSet>
+
+</databaseChangeLog>

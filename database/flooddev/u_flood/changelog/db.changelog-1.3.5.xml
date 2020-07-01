@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:ora="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet author="tjmason" id="1.3.5-1">
+		<sqlFile path="./1.3.5/ffoi_stations_FLO_2817.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-2">
+		<sqlFile path="./1.3.5/remove_FFOI_FLO_2817.sql" splitStatements="false"/>
+	</changeSet>
+
+<!-- new Target Area changes -->
+	<changeSet author="tjmason" id="1.3.5-3">
+		<sqlFile path="./1.3.5/drop_area_tables.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-4">
+        <validCheckSum>7:c9d57dbb058a32a5ccb3d18bc2e94a7d</validCheckSum>
+		<sqlFile path="./1.3.5/flood_alert_area_create_table.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-5">
+        <validCheckSum>7:8be1a06df674895d0bef13c890b4f4c6</validCheckSum>
+		<sqlFile path="./1.3.5/flood_warning_area_create_table.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-6">
+		<sqlFile path="./1.3.5/current_flood_warning_alert_mview.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-7">
+		<sqlFile path="./1.3.5/flood_alert_area_index.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-8">
+		<sqlFile path="./1.3.5/flood_warning_area_index.sql" splitStatements="false"/>
+	</changeSet>
+	<changeSet author="tjmason" id="1.3.5-9">
+		<sqlFile path="./1.3.5/ffoi_get_thresholds.sql" splitStatements="false"/>
+	</changeSet>
+<!-- FFOI changes for FLO-2817 -->
+	<changeSet author="tjmason" id="1.3.5-10">
+		<sqlFile path="./1.3.5/remove_FFOI_FLO_2817_B.sql" splitStatements="false"/>
+	</changeSet>
+</databaseChangeLog>

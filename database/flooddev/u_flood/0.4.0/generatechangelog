@@ -1,0 +1,1 @@
+./liquibase --driver=org.postgresql.Driver --classpath=postgresql-9.3-1103.jdbc3.jar --changeLogFile=./changelogs/db.changelog.xml --url="jdbc:postgresql://localhost:5432/flooddev" --username=postgres --password=postgres --defaultSchemaName=u_flood generateChangeLog

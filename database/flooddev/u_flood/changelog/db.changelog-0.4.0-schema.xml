@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:ora="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <changeSet author="tjmason (generated)" id="1455536129530-3">
+        <createSequence sequenceName="current_fwis_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-5">
+        <createSequence sequenceName="flood_alert_area_gid_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-6">
+        <createSequence sequenceName="flood_warning_area_gid_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-9">
+        <createSequence sequenceName="telemetry_context_bkp_telemetry_context_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-10">
+        <createSequence sequenceName="telemetry_context_telemetry_context_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-11">
+        <createSequence sequenceName="telemetry_file_bkp_telemetry_file_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-12">
+        <createSequence sequenceName="telemetry_file_telemetry_file_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-13">
+        <createSequence sequenceName="telemetry_value_bkp_telemetry_value_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-14">
+        <createSequence sequenceName="telemetry_value_parent_bkp_telemetry_value_parent_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-15">
+        <createSequence sequenceName="telemetry_value_parent_telemetry_value_parent_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-16">
+        <createSequence sequenceName="telemetry_value_telemetry_value_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-17">
+        <createSequence sequenceName="time_series_region_lkp_time_series_lkp_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-18">
+        <createSequence sequenceName="tmp_telemetry_value_parent_tmp_telemetry_value_parent_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-19">
+        <createSequence sequenceName="tmp_telemetry_value_tmp_telemetry_value_id_seq"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-22">
+        <createTable tableName="current_fwis">
+            <column name="id" type="BIGINT" defaultValue="nextval('current_fwis_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="current_fwis_pkey" tablespace="flood_indexes"/>-->
+            </column>
+            <column name="fwa_code" type="VARCHAR(200)"/>
+            <column name="fwa_key" type="INT"/>
+            <column name="description" type="TEXT"/>
+            <column name="region" type="VARCHAR(200)"/>
+            <column name="area" type="VARCHAR(200)"/>
+            <column name="tidal" type="VARCHAR(50)"/>
+            <column name="severity" type="VARCHAR(30)"/>
+            <column name="severity_value" type="SMALLINT"/>
+            <column name="warning_key" type="INT"/>
+            <column name="time_raised" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="severity_changed" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="rim_changed" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="rim" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-22k">
+         <addPrimaryKey constraintName="current_fwis_pkey" tableName="current_fwis" columnNames="id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-23">
+        <createTable tableName="current_load_timestamp">
+            <column name="id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="load_timestamp" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-26">
+        <createTable tableName="flood_alert_area">
+            <column name="gid" type="BIGINT" defaultValue="nextval('flood_alert_area_gid_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="flood_alert_area_pkey"/>-->
+            </column>
+            <column name="region" type="VARCHAR(50)"/>
+            <column name="area" type="VARCHAR(50)"/>
+            <column name="fwd_tacode" type="VARCHAR(50)"/>
+            <column name="fwis_code" type="VARCHAR(50)"/>
+            <column name="fwa_name" type="VARCHAR(254)"/>
+            <column name="descrip" type="VARCHAR(254)"/>
+            <column name="river_sea" type="VARCHAR(254)"/>
+            <column name="county" type="VARCHAR(254)"/>
+            <column name="e_qdial" type="VARCHAR(50)"/>
+            <column name="w_region" type="VARCHAR(50)"/>
+            <column name="w_fwa_name" type="VARCHAR(254)"/>
+            <column name="w_descrip" type="VARCHAR(254)"/>
+            <column name="w_afon" type="VARCHAR(254)"/>
+            <column name="w_qdial" type="VARCHAR(50)"/>
+            <column name="geom" type="GEOMETRY(MultiPolygon, 4326)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-26k">
+         <addPrimaryKey constraintName="flood_alert_area_pkey" tableName="flood_alert_area" columnNames="gid" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-27">
+        <createTable tableName="flood_warning_area">
+            <column name="gid" type="BIGINT" defaultValue="nextval('flood_warning_area_gid_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="flood_warning_area_pkey"/>-->
+            </column>
+            <column name="region" type="VARCHAR(50)"/>
+            <column name="area" type="VARCHAR(50)"/>
+            <column name="fwd_tacode" type="VARCHAR(50)"/>
+            <column name="fwis_code" type="VARCHAR(50)"/>
+            <column name="fwa_name" type="VARCHAR(254)"/>
+            <column name="descrip" type="VARCHAR(254)"/>
+            <column name="river_sea" type="VARCHAR(254)"/>
+            <column name="county" type="VARCHAR(254)"/>
+            <column name="parent" type="VARCHAR(50)"/>
+            <column name="e_qdial" type="VARCHAR(50)"/>
+            <column name="w_region" type="VARCHAR(50)"/>
+            <column name="w_fwa_name" type="VARCHAR(254)"/>
+            <column name="w_descrip" type="VARCHAR(254)"/>
+            <column name="w_afon" type="VARCHAR(254)"/>
+            <column name="w_qdial" type="VARCHAR(50)"/>
+            <column name="geom" type="GEOMETRY(MultiPolygon, 4326)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-27k">
+         <addPrimaryKey constraintName="flood_warning_area_pkey" tableName="flood_warning_area" columnNames="gid" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-34">
+        <createTable tableName="telemetry_context">
+            <column name="telemetry_context_id" type="BIGINT" defaultValue="nextval('telemetry_context_telemetry_context_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_context"/>-->
+            </column>
+            <column name="telemetry_id" type="TEXT"/>
+            <column name="wiski_id" type="TEXT"/>
+            <column name="rloi_id" type="INT"/>
+            <column name="station_type" type="CHAR(1)"/>
+            <column name="post_process" type="BOOL"/>
+            <column name="subtract" type="numeric"/>
+            <column name="region" type="TEXT"/>
+            <column name="area" type="TEXT"/>
+            <column name="catchment" type="TEXT"/>
+            <column name="display_region" type="TEXT"/>
+            <column name="display_area" type="TEXT"/>
+            <column name="display_catchment" type="TEXT"/>
+            <column name="agency_name" type="TEXT"/>
+            <column name="external_name" type="TEXT"/>
+            <column name="location_info" type="TEXT"/>
+            <column name="x_coord_actual" type="INT"/>
+            <column name="y_coord_actual" type="INT"/>
+            <column name="actual_ngr" type="TEXT"/>
+            <column name="x_coord_display" type="INT"/>
+            <column name="y_coord_display" type="INT"/>
+            <column name="site_max" type="numeric"/>
+            <column name="wiski_river_name" type="TEXT"/>
+            <column name="date_open" type="date"/>
+            <column name="stage_datum" type="numeric"/>
+            <column name="period_of_record" type="TEXT"/>
+            <column name="por_max_value" type="numeric"/>
+            <column name="date_por_max" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="highest_level" type="numeric"/>
+            <column name="date_highest_level" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="por_min_value" type="numeric"/>
+            <column name="date_por_min" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="percentile_5" type="numeric"/>
+            <column name="percentile_95" type="numeric"/>
+            <column name="comments" type="TEXT"/>
+            <column name="d_stage_datum" type="numeric"/>
+            <column name="d_period_of_record" type="TEXT"/>
+            <column name="d_por_max_value" type="numeric"/>
+            <column name="d_date_por_max" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="d_highest_level" type="numeric"/>
+            <column name="d_date_highest_level" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="d_por_min_value" type="numeric"/>
+            <column name="d_date_por_min" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="d_percentile_5" type="numeric"/>
+            <column name="d_percentile_95" type="numeric"/>
+            <column name="d_comments" type="TEXT"/>
+            <column name="status" type="TEXT"/>
+            <column name="status_reason" type="TEXT"/>
+            <column name="status_date" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-34k">
+         <addPrimaryKey constraintName="pk_telemetry_context" tableName="telemetry_context" columnNames="telemetry_context_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-35">
+        <createTable tableName="telemetry_context_bkp">
+            <column name="telemetry_context_id" type="BIGINT" defaultValue="nextval('telemetry_context_bkp_telemetry_context_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_context_bkp"/>-->
+            </column>
+            <column name="telemetry_id" type="TEXT"/>
+            <column name="wiski_id" type="TEXT"/>
+            <column name="rloi_id" type="INT"/>
+            <column name="station_type" type="CHAR(1)"/>
+            <column name="post_process" type="BOOL"/>
+            <column name="subtract" type="numeric"/>
+            <column name="region" type="TEXT"/>
+            <column name="area" type="TEXT"/>
+            <column name="catchment" type="TEXT"/>
+            <column name="display_region" type="TEXT"/>
+            <column name="display_area" type="TEXT"/>
+            <column name="display_catchment" type="TEXT"/>
+            <column name="agency_name" type="TEXT"/>
+            <column name="external_name" type="TEXT"/>
+            <column name="location_info" type="TEXT"/>
+            <column name="x_coord_actual" type="INT"/>
+            <column name="y_coord_actual" type="INT"/>
+            <column name="actual_ngr" type="TEXT"/>
+            <column name="x_coord_display" type="INT"/>
+            <column name="y_coord_display" type="INT"/>
+            <column name="site_max" type="numeric"/>
+            <column name="wiski_river_name" type="TEXT"/>
+            <column name="date_open" type="date"/>
+            <column name="stage_datum" type="numeric"/>
+            <column name="period_of_record" type="TEXT"/>
+            <column name="por_max_value" type="numeric"/>
+            <column name="date_por_max" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="highest_level" type="numeric"/>
+            <column name="date_highest_level" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="por_min_value" type="numeric"/>
+            <column name="date_por_min" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="percentile_5" type="numeric"/>
+            <column name="percentile_95" type="numeric"/>
+            <column name="comments" type="TEXT"/>
+            <column name="d_stage_datum" type="numeric"/>
+            <column name="d_period_of_record" type="TEXT"/>
+            <column name="d_por_max_value" type="numeric"/>
+            <column name="d_date_por_max" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="d_highest_level" type="numeric"/>
+            <column name="d_date_highest_level" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="d_por_min_value" type="numeric"/>
+            <column name="d_date_por_min" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="d_percentile_5" type="numeric"/>
+            <column name="d_percentile_95" type="numeric"/>
+            <column name="d_comments" type="TEXT"/>
+            <column name="status" type="TEXT"/>
+            <column name="status_reason" type="TEXT"/>
+            <column name="status_date" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-35k">
+         <addPrimaryKey constraintName="pk_telemetry_context_bkp" tableName="telemetry_context_bkp" columnNames="telemetry_context_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-36">
+        <createTable tableName="telemetry_file">
+            <column name="telemetry_file_id" type="BIGINT" defaultValue="nextval('telemetry_file_telemetry_file_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_file_id"/>-->
+            </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imported" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="processed" type="BOOL"/>
+            <column name="data" type="JSON">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-36k">
+         <addPrimaryKey constraintName="pk_telemetry_file_id" tableName="telemetry_file" columnNames="telemetry_file_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-37">
+        <createTable tableName="telemetry_file_bkp">
+            <column name="telemetry_file_id" type="BIGINT" defaultValue="nextval('telemetry_file_bkp_telemetry_file_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_file_bkp_id"/>-->
+            </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imported" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="processed" type="BOOL"/>
+            <column name="data" type="JSON">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-37k">
+         <addPrimaryKey constraintName="pk_telemetry_file_bkp_id" tableName="telemetry_file_bkp" columnNames="telemetry_file_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-38">
+        <createTable tableName="telemetry_value">
+            <column name="telemetry_value_id" type="BIGINT" defaultValue="nextval('telemetry_value_telemetry_value_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_value_id"/>-->
+            </column>
+            <column name="telemetry_value_parent_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="numeric"/>
+            <column name="processed_value" type="numeric"/>
+            <column name="value_timestamp" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="formatted_value_timestamp" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="error" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-38k">
+         <addPrimaryKey constraintName="pk_telemetry_value_id" tableName="telemetry_value" columnNames="telemetry_value_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-39">
+        <createTable tableName="telemetry_value_bkp">
+            <column name="telemetry_value_id" type="BIGINT" defaultValue="nextval('telemetry_value_bkp_telemetry_value_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_value_bkp_id"/>-->
+            </column>
+            <column name="telemetry_value_parent_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="numeric"/>
+            <column name="processed_value" type="numeric"/>
+            <column name="value_timestamp" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="formatted_value_timestamp" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="error" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-39k">
+         <addPrimaryKey constraintName="pk_telemetry_value_bkp_id" tableName="telemetry_value_bkp" columnNames="telemetry_value_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-40">
+        <createTable tableName="telemetry_value_parent">
+            <column name="telemetry_value_parent_id" type="BIGINT" defaultValue="nextval('telemetry_value_parent_telemetry_value_parent_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_value_parent_id"/>-->
+            </column>
+            <column name="telemetry_file_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rloi_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="station" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="TEXT"/>
+            <column name="start_timestamp" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="end_timestamp" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="parameter" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qualifier" type="TEXT"/>
+            <column name="units" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="values" type="JSON"/>
+            <column name="post_process" type="BOOL"/>
+            <column name="subtract" type="numeric(6, 3)"/>
+            <column name="por_max_value" type="numeric(6, 3)"/>
+            <column name="station_type" type="CHAR(1)"/>
+            <column name="percentile_5" type="numeric(6, 3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-40k">
+         <addPrimaryKey constraintName="pk_telemetry_value_parent_id" tableName="telemetry_value_parent" columnNames="telemetry_value_parent_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-41">
+        <createTable tableName="telemetry_value_parent_bkp">
+            <column name="telemetry_value_parent_id" type="BIGINT" defaultValue="nextval('telemetry_value_parent_bkp_telemetry_value_parent_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_telemetry_value_parent_bkp_id"/>-->
+            </column>
+            <column name="telemetry_file_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rloi_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="station" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_timestamp" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="end_timestamp" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="parameter" type="TEXT"/>
+            <column name="qualifier" type="TEXT"/>
+            <column name="units" type="TEXT"/>
+            <column name="values" type="JSON"/>
+            <column name="post_process" type="BOOL"/>
+            <column name="subtract" type="numeric(6, 3)"/>
+            <column name="por_max_value" type="numeric(6, 3)"/>
+            <column name="station_type" type="CHAR(1)"/>
+            <column name="percentile_5" type="numeric(6, 3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-41k">
+         <addPrimaryKey constraintName="pk_telemetry_value_parent_bkp_id" tableName="telemetry_value_parent_bkp" columnNames="telemetry_value_parent_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-42">
+        <createTable tableName="time_series_region_lkp">
+            <column name="time_series_lkp_id" type="BIGINT" defaultValue="nextval('time_series_region_lkp_time_series_lkp_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_time_series_region_lkp"/>-->
+            </column>
+            <column name="region_name" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="context_region_name" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-42k">
+         <addPrimaryKey constraintName="pk_time_series_region_lkp" tableName="time_series_region_lkp" columnNames="time_series_lkp_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-43">
+        <createTable tableName="tmp_telemetry_value">
+            <column name="tmp_telemetry_value_id" type="BIGINT" defaultValue="nextval('tmp_telemetry_value_tmp_telemetry_value_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_tmp_telemetry_value_id"/>-->
+            </column>
+            <column name="telemetry_value_parent_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="TEXT"/>
+            <column name="value_date" type="TEXT"/>
+            <column name="value_time" type="TEXT"/>
+            <column name="post_process" type="BOOL"/>
+            <column name="subtract" type="numeric(6, 3)"/>
+            <column name="por_max_value" type="numeric(6, 3)"/>
+            <column name="station_type" type="CHAR(1)"/>
+            <column name="percentile_5" type="numeric(6, 3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-43k">
+         <addPrimaryKey constraintName="pk_tmp_telemetry_value_id" tableName="tmp_telemetry_value" columnNames="tmp_telemetry_value_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-44">
+        <createTable tableName="tmp_telemetry_value_parent">
+            <column name="tmp_telemetry_value_parent_id" type="BIGINT" defaultValue="nextval('tmp_telemetry_value_parent_tmp_telemetry_value_parent_id_seq'::regclass)">
+                <!--<constraints primaryKey="true" primaryKeyName="pk_tmp_telemetry_value_parent_id"/>-->
+            </column>
+            <column name="telemetry_file_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rloi_id" type="TEXT"/>
+            <column name="station" type="TEXT"/>
+            <column name="region" type="TEXT"/>
+            <column name="start_date" type="TEXT"/>
+            <column name="start_time" type="TEXT"/>
+            <column name="end_date" type="TEXT"/>
+            <column name="end_time" type="TEXT"/>
+            <column name="parameter" type="TEXT"/>
+            <column name="qualifier" type="TEXT"/>
+            <column name="units" type="TEXT"/>
+            <column name="values" type="JSON"/>
+            <column name="post_process" type="BOOL"/>
+            <column name="subtract" type="numeric(6, 3)"/>
+            <column name="por_max_value" type="numeric(6, 3)"/>
+            <column name="station_type" type="CHAR(1)"/>
+            <column name="percentile_5" type="numeric(6, 3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tjmason" id="1455536129530-44k">
+         <addPrimaryKey constraintName="pk_tmp_telemetry_value_parent_id" tableName="tmp_telemetry_value_parent" columnNames="tmp_telemetry_value_parent_id" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-48">
+        <addPrimaryKey columnNames="id" constraintName="pk_current_load_timestamp" tableName="current_load_timestamp" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-49">
+        <addUniqueConstraint columnNames="context_region_name" constraintName="uc_context_region_name" tableName="time_series_region_lkp" tablespace="flood_indexes"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-50">
+        <addUniqueConstraint columnNames="region_name" constraintName="uc_region_name" tableName="time_series_region_lkp" tablespace="flood_indexes"/>
+    </changeSet>
+	<changeSet author="tjmason" id="1455536129530-54">
+		<sqlFile path="./0.4.0/gis_indexes/flood_alert_area_geom_gist.sql" splitStatements="false"/>
+	</changeSet>	
+	<changeSet author="tjmason" id="1455536129530-55">
+		<sqlFile path="./0.4.0/gis_indexes/flood_warning_area_geom_gist.sql" splitStatements="false"/>
+	</changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-56">
+        <createIndex indexName="idx_tc_region" tableName="telemetry_context" tablespace="flood_indexes">
+            <column name="region"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-57">
+        <createIndex indexName="idx_tc_station" tableName="telemetry_context" tablespace="flood_indexes">
+            <column name="telemetry_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-58">
+        <createIndex indexName="idx_tcb_region" tableName="telemetry_context_bkp" tablespace="flood_indexes">
+            <column name="region"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-59">
+        <createIndex indexName="idx_tcb_station" tableName="telemetry_context_bkp" tablespace="flood_indexes">
+            <column name="telemetry_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-60">
+        <createIndex indexName="idx_ttv_telemetry_value_parent_id" tableName="tmp_telemetry_value" tablespace="flood_indexes">
+            <column name="telemetry_value_parent_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-61">
+        <createIndex indexName="idx_ttvp_region" tableName="tmp_telemetry_value_parent" tablespace="flood_indexes">
+            <column name="region"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-62">
+        <createIndex indexName="idx_ttvp_rloi_id" tableName="tmp_telemetry_value_parent" tablespace="flood_indexes">
+            <column name="rloi_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-63">
+        <createIndex indexName="idx_ttvp_station" tableName="tmp_telemetry_value_parent" tablespace="flood_indexes">
+            <column name="station"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-64">
+        <createIndex indexName="idx_tv_telemetry_value_parent_id" tableName="telemetry_value" tablespace="flood_indexes">
+            <column name="telemetry_value_parent_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-65">
+        <createIndex indexName="idx_tvb_telemetry_value_parent_id" tableName="telemetry_value_bkp" tablespace="flood_indexes">
+            <column name="telemetry_value_parent_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-66">
+        <createIndex indexName="idx_tvp_region" tableName="telemetry_value_parent" tablespace="flood_indexes">
+            <column name="region"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-67">
+        <createIndex indexName="idx_tvp_rloi_id" tableName="telemetry_value_parent" tablespace="flood_indexes">
+            <column name="rloi_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-68">
+        <createIndex indexName="idx_tvp_station" tableName="telemetry_value_parent" tablespace="flood_indexes">
+            <column name="station"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-69">
+        <createIndex indexName="idx_tvpb_region" tableName="telemetry_value_parent_bkp" tablespace="flood_indexes">
+            <column name="region"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-70">
+        <createIndex indexName="idx_tvpb_rloi_id" tableName="telemetry_value_parent_bkp" tablespace="flood_indexes">
+            <column name="rloi_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-71">
+        <createIndex indexName="idx_tvpb_station" tableName="telemetry_value_parent_bkp" tablespace="flood_indexes">
+            <column name="station"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-78">
+        <addForeignKeyConstraint baseColumnNames="telemetry_file_id" baseTableName="telemetry_value_parent_bkp" constraintName="fk_telemetry_file_bkp_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="telemetry_file_id" referencedTableName="telemetry_file_bkp"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-79">
+        <addForeignKeyConstraint baseColumnNames="telemetry_file_id" baseTableName="telemetry_value_parent" constraintName="fk_telemetry_file_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="telemetry_file_id" referencedTableName="telemetry_file"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-80">
+        <addForeignKeyConstraint baseColumnNames="telemetry_value_parent_id" baseTableName="telemetry_value_bkp" constraintName="fk_telemetry_value_parent_bkp_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="telemetry_value_parent_id" referencedTableName="telemetry_value_parent_bkp"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-81">
+        <addForeignKeyConstraint baseColumnNames="telemetry_value_parent_id" baseTableName="telemetry_value" constraintName="fk_telemetry_value_parent_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="telemetry_value_parent_id" referencedTableName="telemetry_value_parent"/>
+    </changeSet>
+    <changeSet author="tjmason (generated)" id="1455536129530-82">
+        <addForeignKeyConstraint baseColumnNames="telemetry_value_parent_id" baseTableName="tmp_telemetry_value" constraintName="fk_tmp_telemetry_value_parent_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="telemetry_value_parent_id" referencedTableName="telemetry_value_parent"/>
+    </changeSet>
+</databaseChangeLog>
