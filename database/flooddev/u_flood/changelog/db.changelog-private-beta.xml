@@ -55,5 +55,10 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 		<sqlFile path="./private-beta/rivers_mview.sql" splitStatements="false"/>
 	</changeSet>
 
+	<!--u_flood.station_ta_8km.sql-->
+	<changeSet author="tjmason" id="beta-station-ta-8km">
+		<sqlFile path="./private-beta/u_flood.station_ta_8km.sql" splitStatements="false"/>
+	</changeSet>
+
 
 </databaseChangeLog>
