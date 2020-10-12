@@ -7,4 +7,7 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 	<changeSet author="tjmason" id="3.1.0-1">
 		<sqlFile path="./3.1.0/station_ta_8km.sql" splitStatements="false"/>
 	</changeSet>
+	<changeSet author="nwycherley" id="3.1.0-2">
+		<sqlFile path="./3.1.0/FIS_702_remove_forecast_and_Thresholds.sql" splitStatements="false"/>
+	</changeSet>
 </databaseChangeLog>
