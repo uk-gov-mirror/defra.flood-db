@@ -10,4 +10,7 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 	<changeSet author="tjmason" id="3.8.0-2">
 		<sqlFile path="./3.8.0/alter_table_parent.sql" splitStatements="false"/>
 	</changeSet>
+	<changeSet author="tjmason" id="3.8.0-3">
+		<sqlFile path="./3.8.0/rainfall_stations_mview.sql" splitStatements="false"/>
+	</changeSet>
 </databaseChangeLog>
