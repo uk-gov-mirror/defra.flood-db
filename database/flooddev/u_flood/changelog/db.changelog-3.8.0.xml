@@ -7,4 +7,7 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 	<changeSet author="tjmason" id="3.8.0-1">
 		<sqlFile path="./3.8.0/sls_telemetry_station.sql" splitStatements="false"/>
 	</changeSet>
+	<changeSet author="tjmason" id="3.8.0-2">
+		<sqlFile path="./3.8.0/alter_table_parent.sql" splitStatements="false"/>
+	</changeSet>
 </databaseChangeLog>
