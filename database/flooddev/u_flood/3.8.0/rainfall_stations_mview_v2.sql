@@ -24,13 +24,13 @@ AS
 	order by station, region, end_timestamp desc) as p on s.station_reference = p.station and s.region = p.region
 	--get latest value from that parent
 	inner join (
-		select distinct on (telemetry_value_parent_id) telemetry_value_parent_id, "value", value_timestamp
+		select distinct on (telemetry_value_parent_id) telemetry_value_parent_id, nullif(value, 'NaN') as "value", value_timestamp
 		from u_flood.sls_telemetry_value v 
 		order by telemetry_value_parent_id, value_timestamp desc
 	) v on v.telemetry_value_parent_id = p.telemetry_value_parent_id
 	-- get last 24 hours values sum
 	left join (
-		select sum(value) as total, p.station, p.region 
+		select sum(nullif(value, 'NaN')) as total, p.station, p.region 
 		from u_flood.sls_telemetry_value_parent p
 		inner join u_flood.sls_telemetry_value v on p.telemetry_value_parent_id = v.telemetry_value_parent_id
 		where v.value_timestamp > (NOW() - interval '1 day') and p.parameter = 'Rainfall'
