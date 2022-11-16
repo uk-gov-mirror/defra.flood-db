@@ -83,4 +83,4 @@ After receiving updated 'river-stations.csv'
 
 replace existing file located in data-load/river_stations
 
-to apply to environment run job LFW_DEV_99_LOAD_RIVERS in the LFW_DEV_MISC_JOBS folder in Jenkins
+to apply to environment run job LFW_DEV_99_LOAD_RIVER_STATIONS in the LFW_DEV_MISC_JOBS folder in Jenkins
