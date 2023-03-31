@@ -5,5 +5,5 @@ services:
     volumes:
       - flood-db-backup:/backup
 
-volumes: 
+volumes:
   flood-db-backup:
