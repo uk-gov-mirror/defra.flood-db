@@ -22,7 +22,7 @@ The data set needs to be updated at the same time as the target area data load i
 2.  Once the dataset has been generated check on the cff development front end that the auto tests are completing correctly, and that stations are showing the relevant warnings.
 
 3.  Once tested now export the data so that it can be stored in github and loaded into other environments.
-	a.  Run ./dump_station_ta_8km.sql in terminal
+	a.  Run ./dump_station_ta_8km.sh in terminal
 		If following error received: 
 
 		pg_dump: error: server version: 13.4; pg_dump version: 12.11 (Ubuntu 12.11-0ubuntu0.20.04.1)
