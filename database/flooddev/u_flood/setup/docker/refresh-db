@@ -11,11 +11,12 @@ function liquibase-update {
   docker compose -f docker-compose.yml -f docker-compose-restore.yml down --remove-orphans
 }
 
-while getopts "d:" opt
+while getopts "d:e" opt
 do
    case "$opt" in
       d ) DB_CONNECTION="$OPTARG" ;;
-      * ) echo "Usage: refresh-db [-d postgres-connection-string]"
+      e ) EXCLUDE_OPTIONS="--exclude-table-data sls_telemetry_value --exclude-table-data sls_telemetry_value_parent --exclude-table \"*_backup\" --exclude-table \"*_test\" " ;;
+      * ) echo "Usage: refresh-db [-d postgres-connection-string [-e] ] where -e excludes telemetry, backup and test data from the dump"
       exit 0;;
    esac
 done
@@ -25,8 +26,9 @@ then
   # Clear out the existing volumes and create dump from db
   # Note: use docker for pg_dump so there is no requirement for postgres to be installed
   docker compose -f docker-compose.yml -f docker-compose-restore.yml down --volumes  --remove-orphans
+  # shellcheck disable=SC2086 disable=SC2090 #EXCLUDE_OPTIONS should not be quoted
   docker compose -f docker-compose.yml -f docker-compose-restore.yml \
-    run --rm flood-db pg_dump "${DB_CONNECTION}" --file /backup/$FILE --verbose --format plain
+    run --rm flood-db pg_dump ${EXCLUDE_OPTIONS} "${DB_CONNECTION}" --file /backup/$FILE --verbose --format plain
 else
   # by ommiting the `-f docker-compose-restore.yml` option only the pgdata and wiyby volumes are deleted and
   # not the flood-db-backup volume
