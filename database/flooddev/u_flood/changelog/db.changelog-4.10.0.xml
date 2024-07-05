@@ -4,15 +4,9 @@ xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns:ora="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-<<<<<<<< HEAD:database/flooddev/u_flood/changelog/db.changelog-4.10.0.xml
 	<changeSet author="kai" id="4.10.0-1">
 		<sqlFile path="./4.10.0/drop-all-assets.sql" splitStatements="false"/>
 		<sqlFile path="./4.10.0/rivers_mview.sql" splitStatements="false"/>
 		<sqlFile path="./4.10.0/stations_list_mview.sql" splitStatements="false"/>
-========
-	<changeSet author="ashleyjtaylor" id="local" context="dev">
-		<sqlFile path="./5.0.0/add_missing_items.sql" splitStatements="false"/>
-        <sqlFile path="./5.0.0/add_river_topo.sql" splitStatements="false" endDelimiter=";" stripComments="true"/>
->>>>>>>> 22c80f0 (update changelog for local only):database/flooddev/u_flood/changelog/db.changelog-local.xml
 	</changeSet>
 </databaseChangeLog>
