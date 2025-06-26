@@ -24,6 +24,8 @@ docker compose \
 
 This will create the `flood-db` and `liquibase` containers and run through the commands to setup the database, permissions and the tables.
 
+Note: The `docker-compose.yml` file contains the setting: `platform: linux/amd64`. This may be Mac specific, so I think this can be commented out for windows machines.
+
 ### Diff
 
 If you want to see the differences between the local and remote databases, run the below command. When it completes, go to the docker UI and follow the instructions below.
