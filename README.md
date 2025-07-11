@@ -15,9 +15,11 @@ To create `flooddev` database from scratch, do the following:
 ```bash
 cd database/flooddev/u_flood/setup/docker
 
+# do this to allow docker to execute the file
+chmod +x ./wait-for-postgis.sh
+
 docker compose \
   -f docker-compose.yml \
-  -f docker-compose-override.yml \
   -f docker-compose-liquibase.yml \
   up --build
 ```
