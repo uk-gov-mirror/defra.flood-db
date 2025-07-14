@@ -24,6 +24,15 @@ docker compose \
   up --build
 ```
 
+To teardown, run:
+
+```bash
+docker compose \
+  -f docker-compose.yml \
+  -f docker-compose-liquibase.yml \
+  down --remove-orphans -v
+```
+
 This will create the `flood-db` and `liquibase` containers and run through the commands to setup the database, permissions and the tables.
 
 Note: The `docker-compose.yml` file contains the setting: `platform: linux/amd64`. This may be Mac specific, so I think this can be commented out for windows machines.

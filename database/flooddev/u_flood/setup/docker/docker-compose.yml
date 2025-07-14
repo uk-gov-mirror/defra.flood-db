@@ -2,6 +2,8 @@ name: cff
 
 services:
   flood-db:
+    ports:
+      - "5433:5432"
     build:
       context: ..
       dockerfile: docker/Dockerfile
