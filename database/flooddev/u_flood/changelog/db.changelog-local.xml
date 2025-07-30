@@ -14,9 +14,14 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 	<changeSet author="ashleyjtaylor" id="local" context="dev">
 =======
 	<changeSet author="ashleyjtaylor" id="local" context="local">
+<<<<<<< HEAD
 >>>>>>> 065f056 (change context to local)
 		<sqlFile path="./5.0.0/add_missing_items.sql" splitStatements="false"/>
         <sqlFile path="./5.0.0/add_river_topo.sql" splitStatements="false" endDelimiter=";" stripComments="true"/>
 >>>>>>>> 22c80f0 (update changelog for local only):database/flooddev/u_flood/changelog/db.changelog-local.xml
+=======
+		<sqlFile path="./local/add_missing_items.sql" splitStatements="false"/>
+        <sqlFile path="./local/add_river_topo.sql" splitStatements="false" endDelimiter=";" stripComments="true"/>
+>>>>>>> 4c77edf (change 5.0.0 to local)
 	</changeSet>
 </databaseChangeLog>
