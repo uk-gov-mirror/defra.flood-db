@@ -9,7 +9,7 @@ services:
     networks:
       - cff-internal
     command: >
-      --url=jdbc:postgresql://flood-db:5432/flooddev
+      --url=jdbc:postgresql://flood-db:5432/${DB_NAME}
       --username=u_flood
       --password=secret
       --referenceUrl=jdbc:postgresql://${REMOTE_DB_URL}
