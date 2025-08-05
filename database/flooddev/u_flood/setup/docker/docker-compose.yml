@@ -10,10 +10,10 @@ services:
     image: flood-db
     shm_size: 1g
     platform: linux/amd64
+    env_file:
+      - .env
     environment:
       PGDATA: /pgdata
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
     volumes:
       - pgdata:/pgdata
       - wiyby:/wiyby

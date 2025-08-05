@@ -1,5 +1,5 @@
 ﻿-- Connect to the database
-\connect flooddev
+\connect :"DB_NAME"
 
 -- === Step 1: Create schemas ===
 CREATE SCHEMA IF NOT EXISTS u_flood AUTHORIZATION u_flood;
@@ -29,12 +29,13 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA u_flood TO u_flood;
 
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO u_flood;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA u_flood TO u_flood;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA postgis TO u_flood;
 
 -- === Step 7: Default privileges for new objects ===
 ALTER DEFAULT PRIVILEGES IN SCHEMA u_flood
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO u_flood;
+ALTER DEFAULT PRIVILEGES IN SCHEMA postgis GRANT EXECUTE ON FUNCTIONS TO u_flood;
 
 -- === Step 8: Set search paths ===
-ALTER DATABASE flooddev SET search_path = u_flood, public, postgis, topology;
+ALTER DATABASE :"DB_NAME" SET search_path = u_flood, public, postgis, topology;
 ALTER ROLE u_flood SET search_path = u_flood, public, postgis, topology;
-
