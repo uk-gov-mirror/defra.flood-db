@@ -8,24 +8,30 @@ Note: a lot of the detail below is redundant if you are running the DB locally u
 
 # Updated (2025)
 
-### Create database
+## Create database
 
-To create `flooddev` database from scratch, do the following:
+To create a database from scratch, do the following:
 
 ```bash
 cd database/flooddev/u_flood/setup/docker
+```
 
-# do this to allow docker to execute the file
+Update `DB_NAME` in the `.env` file.
+
+Allow docker to execute the file:
+```bash
 chmod +x ./wait-for-postgis.sh
+```
 
+To build:
+```bash
 docker compose \
   -f docker-compose.yml \
   -f docker-compose-liquibase.yml \
   up --build
 ```
 
-To teardown, run:
-
+To teardown:
 ```bash
 docker compose \
   -f docker-compose.yml \
@@ -46,7 +52,6 @@ cd database/flooddev/u_flood/setup/docker
 
 docker compose \
   -f docker-compose.yml \
-  -f docker-compose-override.yml \
   -f docker-compose-liquibase.yml \
   -f docker-compose-liquibase-diff.yml \
   run --rm liquibase-diff
@@ -84,6 +89,8 @@ This changelog contains SQL tables that are missing between local and remote.
   - Installs `psql` on to the liquibase container so we can check when postgis has been installed an ready
 - `docker-compose-liquibase-diff.yml`
   - outputs the differences between local and remote instances
+
+---
 
 # Pre requisites
 
