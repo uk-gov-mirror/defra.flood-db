@@ -8,7 +8,29 @@ Note: a lot of the detail below is redundant if you are running the DB locally u
 
 # Updated (2025)
 
-## Create database
+## Initialize database (Jenkins)
+
+WebOps created a temporary database under the dev environment RDS cluster (`temp_flood_db`). A service request will need to be created in the future once they delete the temporary database.
+
+### 1. Run Setup Job
+
+Job: **LFW_DEV_99_DATABASE_SETUP_PIPELINE**
+
+1. Configure _Properties Content_:
+    - Set `PG_DATABASE` to the temporary database
+
+This will create the schemas, roles and configure privleges on them so once the tables are added, `u_flood` and the incoming sql files will have the correct permissions.
+
+### 2. Run Update Job
+
+Nothing to change here, unless changes have been made on branches.
+
+`DB_REPO_BRANCH` - points to the repo containing the Liquibase files
+
+`CONFIG_REPO_BRANCH` - points to the liquibase config that sets the postgres url (this will contain a hardcoded database name, so creating a branch with the temporary database is advised)
+
+
+## Create database (local)
 
 To create a database from scratch, do the following:
 
@@ -43,25 +65,6 @@ This will create the `flood-db` and `liquibase` containers and run through the c
 
 Note: The `docker-compose.yml` file contains the setting: `platform: linux/amd64`. This may be Mac specific, so I think this can be commented out for windows machines.
 
-### Diff
-
-If you want to see the differences between the local and remote databases, run the below command. When it completes, go to the docker UI and follow the instructions below.
-
-```bash
-cd database/flooddev/u_flood/setup/docker
-
-docker compose \
-  -f docker-compose.yml \
-  -f docker-compose-liquibase.yml \
-  -f docker-compose-liquibase-diff.yml \
-  run --rm liquibase-diff
-```
-
-In the Docker UI:
-```
-Containers > cff > liquibase-diff (press play)
-```
-Once its finished, click the 3 dots and "view files". The diff output can be found in: `liquibase/changelog/diff-output.xml`.
 
 ### Populate data from remote
 
@@ -73,22 +76,16 @@ cd database/flooddev/u_flood/setup/docker
 ./populate.sh <remote_postgres_url>
 ```
 
-### changelog-local
-
-This changelog contains SQL tables that are missing between local and remote.
-
 ### Files Added
 
 - `.env.example`
-  - env vars used for `liquibase-diff` only
+  - env vars to set postgres credentials
 - `populate.sh`
   - used to stream data from a remote instance in to local
 - `wait-for-postgis.sh`
   - when running `docker compose`, liquibase container will wait for the flood-db container to finish and have postgis installed, before running. This ensures its functions are ready to be used within the sql files
 - `Dockerfile.liquibase`
   - Installs `psql` on to the liquibase container so we can check when postgis has been installed an ready
-- `docker-compose-liquibase-diff.yml`
-  - outputs the differences between local and remote instances
 
 ---
 
