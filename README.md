@@ -29,6 +29,37 @@ Nothing to change here, unless changes have been made on branches.
 
 `CONFIG_REPO_BRANCH` - points to the liquibase config that sets the postgres url (this will contain a hardcoded database name, so creating a branch with the temporary database is advised)
 
+#### Checksums
+
+If a change has been made to an old changelog sql file or ordering has been changed, this will cause a `checksum` error in the Jenkins job.
+
+This will look something like:
+
+```bash
+changelog/db.changelog-0.4.1.xml::3::username was: 9:d969a0b04f0b1c582d04774622630636 but is now: 9:b41459975317ac437f2c2b9985ac6141
+```
+
+To fix this, either:
+
+#### Update the checksum manually:
+
+1. Copy the "is now" checksum output from the Jenkins job error
+2. Log in to that environments database (via a postgres client) and open the `databasechangelog` table
+3. Find the row that the above will correspond to:
+    - column: filename - `changelog/db.changelog-0.4.1.xml`
+    - column: id - `3`
+    - column: author - `username`
+4. Update column `md5sum` with the new checksum and save the changes
+5. Run the Jenkins update job again
+
+#### Clear the checksums
+
+1. In the GitLab repo `flood-pipelines/jenkins/database/updateDatabaseJenkinsfile`, add the line above the `mvn liquibase:update` command:
+
+```bash
+mvn -Denvironment=rds liquibase:clearCheckSums -f ${DB_REPO_DIRECTORY}/database/flooddev/u_flood/pom.xml
+```
+2. Run the Jenkins update job
 
 ## Create database (local)
 
