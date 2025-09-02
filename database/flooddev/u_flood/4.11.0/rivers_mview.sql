@@ -39,7 +39,9 @@ AS
     rs.calc_rank AS rank,
     ss.rloi_id,
     up.rloi_id AS up,
+    up.station_type AS up_station_type,
     down.rloi_id AS down,
+    down.station_type AS down_station_type,
     ss.telemetry_id,
     ss.region,
     ss.catchment,
@@ -74,12 +76,14 @@ AS
      LEFT JOIN ( SELECT rs1.river_id,
             rs1.rloi_id,
             rs1.rank,
+            tc.station_type,
             rank() OVER (PARTITION BY rs1.river_id ORDER BY rs1.rank) AS calc_rank
            FROM river_stations rs1
              JOIN telemetry_context tc ON rs1.rloi_id = tc.rloi_id) up ON rs.river_id::text = up.river_id::text AND up.calc_rank = (rs.calc_rank - 1)
      LEFT JOIN ( SELECT rs1.river_id,
             rs1.rloi_id,
             rs1.rank,
+            tc.station_type,
             rank() OVER (PARTITION BY rs1.river_id ORDER BY rs1.rank) AS calc_rank
            FROM river_stations rs1
              JOIN telemetry_context tc ON rs1.rloi_id = tc.rloi_id) down ON rs.river_id::text = down.river_id::text AND down.calc_rank = (rs.calc_rank + 1)
@@ -112,10 +116,12 @@ CREATE INDEX idx_rivers_mview_geom_gist
     ON u_flood.rivers_mview USING gist
     (centroid)
     TABLESPACE flood_indexes;
+
 CREATE INDEX idx_rivers_mview_river_id
     ON u_flood.rivers_mview USING btree
     (river_id COLLATE pg_catalog."default")
     TABLESPACE flood_indexes;
+
 CREATE UNIQUE INDEX idx_rivers_unique
     ON u_flood.rivers_mview USING btree
     (id)
