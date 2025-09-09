@@ -52,14 +52,14 @@ To fix this, either:
 4. Update column `md5sum` with the new checksum and save the changes
 5. Run the Jenkins update job again
 
-#### Clear the checksums
+#### Clear the checksums (Jenkins)
 
-1. In the GitLab repo `flood-pipelines/jenkins/database/updateDatabaseJenkinsfile`, add the line above the `mvn liquibase:update` command:
+1. Go the Database Update jenkins job
+2. Under `Configure`, update the flood-pipelines branch to `clearchecksums`
+3. Run the update job
 
-```bash
-mvn -Denvironment=rds liquibase:clearCheckSums -f ${DB_REPO_DIRECTORY}/database/flooddev/u_flood/pom.xml
-```
-2. Run the Jenkins update job
+This will clear all checksums from the envs database, allowing for new and updated changelog files to be processed
+
 
 ## Create database (local)
 
@@ -117,8 +117,6 @@ cd database/flooddev/u_flood/setup/docker
   - when running `docker compose`, liquibase container will wait for the flood-db container to finish and have postgis installed, before running. This ensures its functions are ready to be used within the sql files
 - `Dockerfile.liquibase`
   - Installs `psql` on to the liquibase container so we can check when postgis has been installed an ready
-
----
 
 ---
 
