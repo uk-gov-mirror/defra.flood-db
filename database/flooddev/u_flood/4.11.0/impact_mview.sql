@@ -1,5 +1,8 @@
 -- View: u_flood.impact_mview
 
+SET SESSION statement_timeout = 0;   -- don't cancel long work
+SET SESSION lock_timeout = '5s';     -- but fail fast if blocked
+SET SESSION search_path = u_flood, public;
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS u_flood.impact_mview
 TABLESPACE flood_tables
