@@ -1,10 +1,8 @@
-const neostandard = require('neostandard')
-
 module.exports = [
   {
     ignores: ['coverage/**', 'test/output*', 'test/*.html']
   },
-  ...neostandard(),
+  ...require('neostandard')({}),
   {
     languageOptions: {
       parserOptions: {
