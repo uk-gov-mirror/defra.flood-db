@@ -32,6 +32,12 @@ Without the -d option the DB image will be built from the last DB backup.
 
 Note: the refresh-db script will also apply any outstanding liquibase scripts which are missing from the restored DB. See also the Liquibase section below.
 
+To replace data in the existing local database from DEV without deleting its Docker volumes or schema, run:
+
+`./refresh-db-data -d [DEV database connection string]`
+
+This replaces data in source `u_flood` tables, leaves local tables that do not exist in DEV untouched, and refreshes the `u_flood` materialized views. The local database container must be running, and its schema must be compatible with DEV. The data replacement and view refresh run in one transaction; an error rolls the operation back. This does not run Liquibase.
+
 # Starting the DB after the refresh
 
 The DB needs starting after the refresh using `docker compose up`.

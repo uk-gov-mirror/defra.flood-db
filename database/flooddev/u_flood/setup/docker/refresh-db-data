@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+LOCAL_DB=flooddev
+DB_CONNECTION=
+
+while getopts "d:h" opt
+do
+  case "$opt" in
+    d ) DB_CONNECTION="$OPTARG" ;;
+    h ) echo "Usage: ./refresh-db-data -d [DEV database connection string]"
+        exit 0 ;;
+    * ) echo "Usage: ./refresh-db-data -d [DEV database connection string]" >&2
+        exit 1 ;;
+  esac
+done
+
+if [[ -z "$DB_CONNECTION" ]]; then
+  echo "A DEV database connection string is required (-d)." >&2
+  exit 1
+fi
+
+COMPOSE=(docker compose -f docker-compose.yml)
+
+if ! "${COMPOSE[@]}" exec -T flood-db pg_isready -U postgres -d "$LOCAL_DB" >/dev/null; then
+  echo "The local flood-db container must be running with database $LOCAL_DB available." >&2
+  exit 1
+fi
+
+DUMP_FILE=$(mktemp)
+trap 'rm -f "$DUMP_FILE"' EXIT
+
+echo "Reading DEV data (read-only); local data is unchanged during this step..."
+"${COMPOSE[@]}" exec -T flood-db pg_dump \
+  --verbose \
+  --data-only \
+  --schema=u_flood \
+  --exclude-table-data='u_flood.*_mview' \
+  --dbname="$DB_CONNECTION" > "$DUMP_FILE"
+
+SOURCE_TABLES=$("${COMPOSE[@]}" exec -T flood-db psql --dbname="$DB_CONNECTION" -Atqc "
+  SELECT string_agg(format('%I.%I', n.nspname, c.relname), ', ')
+  FROM pg_class c
+  JOIN pg_namespace n ON n.oid = c.relnamespace
+  WHERE n.nspname = 'u_flood'
+    AND c.relkind IN ('r', 'p')
+    AND NOT c.relispartition;
+")
+
+if [[ -z "$SOURCE_TABLES" ]]; then
+  echo "No u_flood tables found in the source database; nothing was changed." >&2
+  exit 1
+fi
+
+echo "Clearing and replacing local u_flood data, then refreshing materialized views..."
+{
+  printf 'TRUNCATE TABLE %s;\n' "$SOURCE_TABLES"
+  cat "$DUMP_FILE"
+  cat <<'SQL'
+DO $$
+DECLARE
+    _view RECORD;
+BEGIN
+    FOR _view IN
+        WITH RECURSIVE dependencies(view_oid, dependency_oid, depth, path) AS (
+            SELECT view.oid, referenced.oid, 1, ARRAY[view.oid, referenced.oid]
+            FROM pg_class view
+            JOIN pg_namespace view_schema ON view_schema.oid = view.relnamespace
+            JOIN pg_depend d ON d.classid = 'pg_class'::regclass AND d.objid = view.oid
+                AND d.refclassid = 'pg_class'::regclass
+            JOIN pg_class referenced ON referenced.oid = d.refobjid AND referenced.relkind = 'm'
+            JOIN pg_namespace referenced_schema ON referenced_schema.oid = referenced.relnamespace
+            WHERE view.relkind = 'm'
+                AND view_schema.nspname = 'u_flood'
+                AND referenced_schema.nspname = 'u_flood'
+            UNION ALL
+            SELECT dependencies.view_oid, referenced.oid, dependencies.depth + 1,
+                   dependencies.path || referenced.oid
+            FROM dependencies
+            JOIN pg_depend d ON d.classid = 'pg_class'::regclass AND d.objid = dependencies.dependency_oid
+                AND d.refclassid = 'pg_class'::regclass
+            JOIN pg_class referenced ON referenced.oid = d.refobjid AND referenced.relkind = 'm'
+            JOIN pg_namespace referenced_schema ON referenced_schema.oid = referenced.relnamespace
+            WHERE referenced_schema.nspname = 'u_flood'
+                AND NOT referenced.oid = ANY(dependencies.path)
+        ), view_depths AS (
+            SELECT view_oid, max(depth) AS depth
+            FROM dependencies
+            GROUP BY view_oid
+        )
+        SELECT view_schema.nspname, view.relname
+        FROM pg_class view
+        JOIN pg_namespace view_schema ON view_schema.oid = view.relnamespace
+        LEFT JOIN view_depths ON view_depths.view_oid = view.oid
+        WHERE view.relkind = 'm'
+            AND view_schema.nspname = 'u_flood'
+        ORDER BY COALESCE(view_depths.depth, 0), view.relname
+    LOOP
+        EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I', _view.nspname, _view.relname);
+    END LOOP;
+END
+$$;
+SQL
+} | "${COMPOSE[@]}" exec -T flood-db psql \
+  --username postgres \
+  --dbname "$LOCAL_DB" \
+  --set ON_ERROR_STOP=1 \
+  --single-transaction
+
+echo "Local u_flood data refresh complete."

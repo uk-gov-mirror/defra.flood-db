@@ -5,6 +5,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+      secrets:
+        - corp_ca
     image: flood-db
     shm_size: 1g
     platform: linux/amd64
@@ -29,6 +31,10 @@ volumes:
     name: flood-db-pgdata
   wiyby:
     name: flood-db-wiyby
+
+secrets:
+  corp_ca:
+    environment: CORP_CA
 
 networks:
   cff-internal:
